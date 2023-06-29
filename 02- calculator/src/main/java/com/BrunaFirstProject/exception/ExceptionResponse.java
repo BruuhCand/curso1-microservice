@@ -1,7 +1,7 @@
 package com.BrunaFirstProject.exception;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 public class ExceptionResponse implements Serializable{
 
@@ -18,6 +18,7 @@ public class ExceptionResponse implements Serializable{
 		this.message = message;
 		this.details = details;
 	}
+
 
 	public Date getTimestamp() {
 		return timestamp;

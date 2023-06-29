@@ -5,41 +5,75 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.BrunaFirstProject.exception.UnsuportedMathOperationException;
+import com.BrunaFirstProject.entities.MathRequisito;
+import com.BrunaFirstProject.entities.MathOperation; 
+
 @RestController
 public class MathController {
 
-
+	private MathRequisito r = new MathRequisito();
+	private MathOperation op = new MathOperation();
 	
 	
-	@RequestMapping(value="/sum/{numberOne}/{numberTwo}", method = RequestMethod.GET)
+	@RequestMapping(value="/sum/{numberOne}/{numberTwo}", method = RequestMethod.GET)//{} indica uma condição
 	public 	Double sum(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo ) throws Exception {
 		
-		if(!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-			throw new Exception();
+		if(!r.isNumeric(numberOne) || !r.isNumeric(numberTwo)) {
+			throw new UnsuportedMathOperationException("Por favor defina um valor numerico"); // mensagem que aparece com o erro
 		}
 		
-		Double sum = convertToDouble(numberOne) + convertToDouble(numberTwo);
-		
-		return sum;
+		return op.soma(r.convertToDouble(numberOne), r.convertToDouble(numberTwo));
 	}
-
-	private Double convertToDouble(String strNumber) {
+	
+	@RequestMapping(value="/sub/{numberOne}/{numberTwo}", method = RequestMethod.GET)
+	public 	Double sub(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo ) throws Exception {
 		
-		if(strNumber == null) return 0D;
+		if(!r.isNumeric(numberOne) || !r.isNumeric(numberTwo)) {
+			throw new UnsuportedMathOperationException("Por favor defina um valor numerico"); // mensagem que aparece com o erro
+		}
 		
-		String number = strNumber.replaceAll(",", ".");
-		
-		if(isNumeric(number)) return Double.parseDouble(number);
-		return 0D;
+		return op.subtracao(r.convertToDouble(numberOne), r.convertToDouble(numberTwo));
 	}
-
-	private boolean isNumeric(String strNumber) {
+	
+	@RequestMapping(value="/div/{numberOne}/{numberTwo}", method = RequestMethod.GET)
+	public 	Double div(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo ) throws Exception {
 		
-		if(strNumber == null) return false;
+		if(!r.isNumeric(numberOne) || !r.isNumeric(numberTwo)) {
+			throw new UnsuportedMathOperationException("Por favor defina um valor numerico"); // mensagem que aparece com o erro
+		}
 		
-		String number = strNumber.replaceAll(",", ".");
+		return op.divisao(r.convertToDouble(numberOne), r.convertToDouble(numberTwo));
+	}
+	
+	@RequestMapping(value="/mult/{numberOne}/{numberTwo}", method = RequestMethod.GET)
+	public 	Double mult(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo ) throws Exception {
 		
-		return number.matches("[-+]?[0-9]*\\.?[0-9]+");
+		if(!r.isNumeric(numberOne) || !r.isNumeric(numberTwo)) {
+			throw new UnsuportedMathOperationException("Por favor defina um valor numerico"); // mensagem que aparece com o erro
+		}
+		
+		return op.multi(r.convertToDouble(numberOne), r.convertToDouble(numberTwo));
+	}
+	
+	@RequestMapping(value="/media/{numberOne}/{numberTwo}", method = RequestMethod.GET)
+	public 	Double media(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo ) throws Exception {
+		
+		if(!r.isNumeric(numberOne) || !r.isNumeric(numberTwo)) {
+			throw new UnsuportedMathOperationException("Por favor defina um valor numerico"); // mensagem que aparece com o erro
+		}
+		
+		return op.media(r.convertToDouble(numberOne), r.convertToDouble(numberTwo));
+	}
+	
+	@RequestMapping(value="/raiz/{numberOne}", method = RequestMethod.GET) 
+	public 	Double raiz(@PathVariable("numberOne") String numberOne) throws Exception {
+		
+		if(!r.isNumeric(numberOne)) {
+			throw new UnsuportedMathOperationException("Por favor defina um valor numerico"); // mensagem que aparece com o erro
+		}
+		
+		return op.raiz(r.convertToDouble(numberOne));
 	}
 	
 	
